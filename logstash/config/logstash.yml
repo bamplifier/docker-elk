@@ -1,6 +1,23 @@
 ---
-## Default Logstash configuration from logstash-docker.
-## from https://github.com/elastic/logstash-docker/blob/master/build/logstash/config/logstash-oss.yml
+## Based on default Logstash configuration from logstash-docker.
+## from https://github.com/elastic/logstash-docker/blob/master/build/logstash/config/logstash-x-pack.yml
 #
 http.host: "0.0.0.0"
-path.config: /usr/share/logstash/pipeline
+# path.config should be removed from here, according to https://github.com/elastic/logstash/issues/8420 
+##path.config: /usr/share/logstash/pipeline
+xpack.monitoring.enabled: true
+xpack.monitoring.elasticsearch.url: http://192.168.20.100:9200
+xpack.monitoring.elasticsearch.username: logstash_system
+xpack.monitoring.elasticsearch.password: changeme
+#
+# unset by default. see:
+# https://www.elastic.co/guide/en/logstash/current/ls-security.html#ls-monitoring-user
+#
+# By default, the 'logstash_system' user does not have a password, and it will not be enabled until you set it up.
+# As soon as stack is started, set the password through the change password API, using "Kibana Dev Tools".
+# Remove comments from command below, past it to Dev Tools console and run. Error messages should stop from log. 
+# PUT _xpack/security/user/logstash_system/_password
+#{
+#  "password": "changeme"
+#}
+
